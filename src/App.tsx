@@ -1,17 +1,14 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { Routes, Route } from 'react-router'
+import { Landing } from './landing/Landing'
+import { Dashboard } from './dashboard/Dashboard'
 
 export const App = () => {
   return (
     <>
-      <header>
-        <SignedOut>
-          <SignInButton />
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-      </header>
-      <h1>HomeBase</h1>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
     </>
   )
 }
