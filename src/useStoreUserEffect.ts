@@ -5,13 +5,18 @@ import { useMutation } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { Id } from "../convex/_generated/dataModel";
 
-export function useStoreUserEffect() {
+export const useStoreUserEffect = () => {
   const { isLoading, isAuthenticated } = useConvexAuth();
   const { user } = useUser();
   // When this state is set we know the server
   // has stored the user.
   const [userId, setUserId] = useState<Id<"users"> | null>(null);
   const storeUser = useMutation(api.users.store);
+
+  const createUser = async () => {
+    const id = await storeUser();
+    setUserId(id);
+  }
   // Call the `storeUser` mutation function to store
   // the current user in the `users` table and return the `Id` value.
   useEffect(() => {
@@ -22,10 +27,6 @@ export function useStoreUserEffect() {
     // Store the user in the database.
     // Recall that `storeUser` gets the user information via the `auth`
     // object on the server. You don't need to pass anything manually here.
-    async function createUser() {
-      const id = await storeUser();
-      setUserId(id);
-    }
     createUser();
     return () => setUserId(null);
     // Make sure the effect reruns if the user logs in with
